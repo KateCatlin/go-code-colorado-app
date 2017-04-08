@@ -21,4 +21,5 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.github.Slyce-Inc:SlyceMessaging:1.1.2'
+    compile 'com.google.code.gson:gson:2.8.0'
 }
