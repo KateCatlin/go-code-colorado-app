@@ -11,7 +11,7 @@ public class FollowupQuestion {
     private String prompt;
     @SerializedName("response")
     @Expose
-    private Response_ response;
+    private Response response;
 
     public String getPrompt() {
         return prompt;
@@ -21,11 +21,11 @@ public class FollowupQuestion {
         this.prompt = prompt;
     }
 
-    public Response_ getResponse() {
+    public Response getResponse() {
         return response;
     }
 
-    public void setResponse(Response_ response) {
+    public void setResponse(Response response) {
         this.response = response;
     }
 
