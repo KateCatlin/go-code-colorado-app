@@ -1,0 +1,54 @@
+{
+  "version": 1.0,
+  "data": [
+    {
+      "prompt": "What's the name of your company?",
+      "response": {
+        "type": "user-entry"
+      }
+    },
+    {
+      "prompt": "Are you open to remote workers?",
+      "response": {
+        "type": "binary"
+      },
+      "followup": [
+        {
+          "matched-response": "yes",
+          "followup-questions": [
+            {
+              "prompt": "Do you know how awesome you are?",
+              "response": {
+                "type": "binary"
+              }
+            }
+          ]
+        },
+        {
+          "matched-response": "no",
+          "followup-questions": [
+            {
+              "prompt": "Did you know how much people love remote work?",
+              "response": {
+                "type": "binary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prompt": "What kind of tech worker do you need?",
+      "response": {
+        "type": "choice",
+        "choices": [
+          "iOS",
+          "Android",
+          "Frontend Web",
+          "Backend",
+          "Full-Stack Web"
+        ]
+      }
+    }
+  ]
+}
