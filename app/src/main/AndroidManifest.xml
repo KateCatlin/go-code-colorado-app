@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".LaunchActivity">
+        <activity android:name=".activities.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,8 +17,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".StatActivity" />
+        <activity android:name=".activities.ChatActivity" />
+        <activity android:name=".activities.StatActivity" />
 
     </application>
 

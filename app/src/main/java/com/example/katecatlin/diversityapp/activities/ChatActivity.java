@@ -1,9 +1,11 @@
-package com.example.katecatlin.diversityapp;
+package com.example.katecatlin.diversityapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.katecatlin.diversityapp.models.QuestionFlow;
+import com.example.katecatlin.diversityapp.R;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
