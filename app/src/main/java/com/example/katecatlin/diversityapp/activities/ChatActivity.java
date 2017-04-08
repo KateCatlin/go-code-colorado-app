@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.List;
 
 import it.slyce.messaging.SlyceMessagingFragment;
@@ -56,6 +57,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
             final TextMessage currentMessage = new TextMessage();
             currentMessage.setText(currentQuestion.getPrompt());
             currentMessage.setSource(MessageSource.EXTERNAL_USER);
+            currentMessage.setDate(new Date().getTime());
             messagingFragment.addNewMessage(currentMessage);
 //        } else if (currentQuestion.getResponse().getType().equals("choice")) {
 //            final GeneralOptionsMessage
