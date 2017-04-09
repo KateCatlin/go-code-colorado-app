@@ -204,7 +204,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         message.setDate(new Date().getTime());
 
         if (fromBot) {
-            message.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
+            message.setAvatarUrl("http://www.findmyflock.com/uploads/2/9/8/9/29890707/bot-avatar_orig.png");
         }
     }
 
