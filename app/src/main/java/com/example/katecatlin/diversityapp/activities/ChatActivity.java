@@ -14,6 +14,7 @@ import com.example.katecatlin.diversityapp.messages.VerticalGeneralOptionsMessag
 import com.example.katecatlin.diversityapp.models.Followup;
 import com.example.katecatlin.diversityapp.models.Question;
 import com.example.katecatlin.diversityapp.models.QuestionFlow;
+import com.example.katecatlin.diversityapp.networking.Service;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -31,6 +32,7 @@ import it.slyce.messaging.message.GeneralOptionsMessage;
 import it.slyce.messaging.message.Message;
 import it.slyce.messaging.message.MessageSource;
 import it.slyce.messaging.message.TextMessage;
+import retrofit2.Retrofit;
 
 /**
  * Created by katecatlin on 4/8/17.
@@ -48,6 +50,8 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
     private List<String> serverRelevantResponses = new ArrayList<>();
 
+    private Service service;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +67,17 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         } catch (Exception e) {
         }
 
+        prepareService();
         updateCurrentQuestion();
         askCurrentQuestion();
+    }
+
+    private void prepareService() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://salty-refuge-57490.herokuapp.com/")
+                .build();
+
+        service = retrofit.create(Service.class);
     }
 
     private void askCurrentQuestion() {
