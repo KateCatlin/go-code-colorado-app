@@ -214,7 +214,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     }
 
     private String getServerPath() {
-        return TextUtils.join("/", serverRelevantResponses);
+        return TextUtils.join("/", serverRelevantResponses).replaceAll("\\s+", "").toLowerCase();
     }
 
 }
