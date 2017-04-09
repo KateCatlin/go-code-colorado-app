@@ -2,6 +2,7 @@ package com.example.katecatlin.diversityapp.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.webkit.WebView;
 
 import com.example.katecatlin.diversityapp.R;
 
@@ -14,6 +15,9 @@ public class StatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stat);
+
+        WebView webview = new WebView(this);
+        setContentView(webview);
+        webview.loadUrl("http://slashdot.org/");
     }
 }
