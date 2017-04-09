@@ -17,7 +17,9 @@ import java.util.Date;
 import java.util.List;
 
 import it.slyce.messaging.SlyceMessagingFragment;
+import it.slyce.messaging.listeners.OnOptionSelectedListener;
 import it.slyce.messaging.listeners.UserSendsMessageListener;
+import it.slyce.messaging.message.GeneralOptionsMessage;
 import it.slyce.messaging.message.MessageSource;
 import it.slyce.messaging.message.TextMessage;
 
@@ -53,12 +55,34 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     }
 
     private void askCurrentQuestion() {
+        String questionType = currentQuestion.getResponse().getType();
+        if (questionType.equals("user-entry")) {
             final TextMessage currentMessage = new TextMessage();
             currentMessage.setText(currentQuestion.getPrompt());
             currentMessage.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
             currentMessage.setSource(MessageSource.EXTERNAL_USER);
             currentMessage.setDate(new Date().getTime());
             messagingFragment.addNewMessage(currentMessage);
+        } else if (questionType.equals("binary")) {
+            final TextMessage currentMessage = new TextMessage();
+            currentMessage.setText(currentQuestion.getPrompt());
+            currentMessage.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
+            currentMessage.setSource(MessageSource.EXTERNAL_USER);
+            currentMessage.setDate(new Date().getTime());
+            messagingFragment.addNewMessage(currentMessage);
+        } else if (questionType.equals("choice")) {
+            final GeneralOptionsMessage currentMessage = new GeneralOptionsMessage();
+            currentMessage.setTitle(currentQuestion.getPrompt());
+            currentMessage.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
+            currentMessage.setSource(MessageSource.EXTERNAL_USER);
+            currentMessage.setDate(new Date().getTime());
+            List<String> listOfChoices = currentQuestion.getResponse().getChoices();
+            currentMessage.setOptions((String[]) listOfChoices.toArray(new String[listOfChoices.size()]));
+
+            messagingFragment.addNewMessage(currentMessage);
+
+        }
+
     }
 
     private void updateCurrentQuestion() {
@@ -79,6 +103,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
             advanceToStats();
         }
     }
+
 
     @Override
     public void onUserSendsMediaMessage(final Uri imageUri) {}
