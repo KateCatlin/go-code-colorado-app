@@ -53,20 +53,13 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     }
 
     private void askCurrentQuestion() {
-//        if (currentQuestion.getResponse().getType().equals("user-entry")) {
             final TextMessage currentMessage = new TextMessage();
             currentMessage.setText(currentQuestion.getPrompt());
             currentMessage.setSource(MessageSource.EXTERNAL_USER);
             currentMessage.setDate(new Date().getTime());
             messagingFragment.addNewMessage(currentMessage);
-//        } else if (currentQuestion.getResponse().getType().equals("choice")) {
-//            final GeneralOptionsMessage
-//        }
     }
 
-    /**
-     * check that areThereMoreQuestions returns true before calling me
-     */
     private void updateCurrentQuestion() {
         currentQuestion = questions.get(0);
         questions.remove(0);
@@ -75,13 +68,6 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     private boolean areThereMoreQuestions() {
         return !questions.isEmpty();
     }
-
-    private void advanceToStats() {
-        Intent intent = new Intent(this, StatActivity.class);
-        startActivity(intent);
-    }
-
-    // UserSendsMessageListener
 
     @Override
     public void onUserSendsTextMessage(final String text) {
@@ -95,5 +81,10 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
     @Override
     public void onUserSendsMediaMessage(final Uri imageUri) {}
+
+    private void advanceToStats() {
+        Intent intent = new Intent(this, StatActivity.class);
+        startActivity(intent);
+    }
 
 }
