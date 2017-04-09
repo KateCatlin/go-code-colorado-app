@@ -4,7 +4,9 @@ package com.example.katecatlin.diversityapp.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FollowupQuestion {
+import java.util.List;
+
+public class Question {
 
     @SerializedName("prompt")
     @Expose
@@ -12,6 +14,9 @@ public class FollowupQuestion {
     @SerializedName("response")
     @Expose
     private Response response;
+    @SerializedName("followup")
+    @Expose
+    private List<Followup> followup = null;
 
     public String getPrompt() {
         return prompt;
@@ -27,6 +32,14 @@ public class FollowupQuestion {
 
     public void setResponse(Response response) {
         this.response = response;
+    }
+
+    public List<Followup> getFollowup() {
+        return followup;
+    }
+
+    public void setFollowup(List<Followup> followup) {
+        this.followup = followup;
     }
 
 }

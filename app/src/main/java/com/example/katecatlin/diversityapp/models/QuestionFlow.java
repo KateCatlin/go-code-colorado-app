@@ -1,9 +1,10 @@
 
 package com.example.katecatlin.diversityapp.models;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class QuestionFlow {
 
@@ -12,7 +13,7 @@ public class QuestionFlow {
     private double version;
     @SerializedName("data")
     @Expose
-    private List<Datum> data = null;
+    private List<Question> data = null;
 
     public double getVersion() {
         return version;
@@ -22,11 +23,11 @@ public class QuestionFlow {
         this.version = version;
     }
 
-    public List<Datum> getData() {
+    public List<Question> getData() {
         return data;
     }
 
-    public void setData(List<Datum> data) {
+    public void setData(List<Question> data) {
         this.data = data;
     }
 

@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.example.katecatlin.diversityapp.R;
 import com.example.katecatlin.diversityapp.messages.VerticalGeneralOptionsMessage;
-import com.example.katecatlin.diversityapp.models.Datum;
+import com.example.katecatlin.diversityapp.models.Question;
 import com.example.katecatlin.diversityapp.models.Followup;
 import com.example.katecatlin.diversityapp.models.QuestionFlow;
 import com.google.gson.Gson;
@@ -37,13 +37,13 @@ import it.slyce.messaging.message.TextMessage;
 
 public class ChatActivity extends AppCompatActivity implements UserSendsMessageListener, OnOptionSelectedListener {
 
-    public static final List<String> BINARY_QUESTION_CHOICES = Arrays.asList("Yes", "No");
+    public static final List<String> BINARY_QUESTION_CHOICES = Arrays.asList("yes", "no");
 
-    private Datum currentQuestion;
+    private Question currentQuestion;
 
     private SlyceMessagingFragment messagingFragment;
 
-    private List<Datum> questions;
+    private List<Question> questions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +170,11 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
         if (isFollowUp) {
             for (Followup followup: currentQuestion.getFollowup()) {
-                if (followup.getMatchedResponse().equals(textAnswer)) {
+                if (followup.getMatchedResponse().equalsIgnoreCase(textAnswer)) {
+                    List<Question> updatedQuestions = new ArrayList<>();
+                    updatedQuestions.addAll(followup.getFollowupQuestions());
+                    updatedQuestions.addAll(questions);
+                    questions = updatedQuestions;
                 }
             }
         }

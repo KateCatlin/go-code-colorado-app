@@ -1,9 +1,10 @@
 
 package com.example.katecatlin.diversityapp.models;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Followup {
 
@@ -12,7 +13,7 @@ public class Followup {
     private String matchedResponse;
     @SerializedName("followup-questions")
     @Expose
-    private List<FollowupQuestion> followupQuestions = null;
+    private List<Question> followupQuestions = null;
 
     public String getMatchedResponse() {
         return matchedResponse;
@@ -22,11 +23,11 @@ public class Followup {
         this.matchedResponse = matchedResponse;
     }
 
-    public List<FollowupQuestion> getFollowupQuestions() {
+    public List<Question> getFollowupQuestions() {
         return followupQuestions;
     }
 
-    public void setFollowupQuestions(List<FollowupQuestion> followupQuestions) {
+    public void setFollowupQuestions(List<Question> followupQuestions) {
         this.followupQuestions = followupQuestions;
     }
 
