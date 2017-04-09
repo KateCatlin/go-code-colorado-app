@@ -39,6 +39,8 @@ import it.slyce.messaging.message.TextMessage;
 public class ChatActivity extends AppCompatActivity implements UserSendsMessageListener, OnOptionSelectedListener {
 
     public static final List<String> BINARY_QUESTION_CHOICES = Arrays.asList("yes", "no");
+    public static final String FULL_URL_KEY = "FULL_URL_KEY";
+
 
     private Question currentQuestion;
 
@@ -47,6 +49,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     private List<Question> questions;
 
     private List<String> serverRelevantResponses = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +148,11 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     public void onUserSendsMediaMessage(final Uri imageUri) {}
 
     private void advanceToStats() {
+        String baseURL = "https://salty-refuge-57490.herokuapp.com/";
+        String fullURL = baseURL + getServerPath();
+
         Intent intent = new Intent(this, StatActivity.class);
+        intent.putExtra(FULL_URL_KEY, fullURL);
         startActivity(intent);
     }
 
