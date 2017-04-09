@@ -55,6 +55,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     private void askCurrentQuestion() {
             final TextMessage currentMessage = new TextMessage();
             currentMessage.setText(currentQuestion.getPrompt());
+            currentMessage.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
             currentMessage.setSource(MessageSource.EXTERNAL_USER);
             currentMessage.setDate(new Date().getTime());
             messagingFragment.addNewMessage(currentMessage);
