@@ -11,12 +11,14 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.katecatlin.diversityapp.R;
 import com.example.katecatlin.diversityapp.messages.VerticalGeneralOptionsMessage;
 import com.example.katecatlin.diversityapp.models.Datum;
+import com.example.katecatlin.diversityapp.models.Followup;
 import com.example.katecatlin.diversityapp.models.QuestionFlow;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -96,6 +98,8 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     }
 
     private void updateCurrentQuestion() {
+
+
         currentQuestion = questions.get(0);
         questions.remove(0);
 
@@ -112,10 +116,12 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
     @Override
     public void onUserSendsTextMessage(final String text) {
+        handleFollowUp(text);
         handleQuestionAnswered();
     }
 
     private void handleQuestionAnswered() {
+
         if (areThereMoreQuestions()) {
             updateCurrentQuestion();
             askCurrentQuestion();
@@ -152,9 +158,23 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         questionMessage.setText(response);
         configureMessage(questionMessage, false);
         messagingFragment.addNewMessage(questionMessage);
+
+        handleFollowUp(response);
         handleQuestionAnswered();
 
         return ""; // not used!
+    }
+
+    private void handleFollowUp (String textAnswer) {
+        boolean isFollowUp = currentQuestion.getFollowup() != null && !currentQuestion.getFollowup().isEmpty();
+
+        if (isFollowUp) {
+            for (Followup followup: currentQuestion.getFollowup()) {
+                if (followup.getMatchedResponse().equals(textAnswer)) {
+                }
+            }
+        }
+
     }
 
     private void configureMessage(Message message, boolean fromBot) {
