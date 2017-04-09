@@ -204,7 +204,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         message.setDate(new Date().getTime());
 
         if (fromBot) {
-            message.setAvatarUrl("http://www.findmyflock.com/uploads/2/9/8/9/29890707/bot-avatar_orig.png");
+            message.setAvatarUrl("file:///android_asset/ic_avatar.png");
         }
     }
 
@@ -214,7 +214,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     }
 
     private String getServerPath() {
-        return TextUtils.join("/", serverRelevantResponses);
+        return TextUtils.join("/", serverRelevantResponses).replaceAll("\\s+", "").toLowerCase();
     }
 
 }
