@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/diversityheader"
+        android:background="@drawable/diversityheader"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         />
