@@ -11,9 +11,9 @@ public class Followup {
     @SerializedName("matched-response")
     @Expose
     private String matchedResponse;
-    @SerializedName("followup-questions")
+    @SerializedName("questions")
     @Expose
-    private List<Question> followupQuestions = null;
+    private List<Question> questions = null;
 
     public String getMatchedResponse() {
         return matchedResponse;
@@ -24,11 +24,11 @@ public class Followup {
     }
 
     public List<Question> getFollowupQuestions() {
-        return followupQuestions;
+        return questions;
     }
 
     public void setFollowupQuestions(List<Question> followupQuestions) {
-        this.followupQuestions = followupQuestions;
+        this.questions = followupQuestions;
     }
 
 }

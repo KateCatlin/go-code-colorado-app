@@ -11,9 +11,9 @@ public class QuestionFlow {
     @SerializedName("version")
     @Expose
     private double version;
-    @SerializedName("data")
+    @SerializedName("questions")
     @Expose
-    private List<Question> data = null;
+    private List<Question> questions = null;
 
     public double getVersion() {
         return version;
@@ -24,11 +24,11 @@ public class QuestionFlow {
     }
 
     public List<Question> getData() {
-        return data;
+        return questions;
     }
 
     public void setData(List<Question> data) {
-        this.data = data;
+        this.questions = data;
     }
 
 }

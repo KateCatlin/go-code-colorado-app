@@ -1,6 +1,6 @@
 {
-  "version": 1.0,
-  "data": [
+  "version": 1.1,
+  "questions": [
     {
       "prompt": "What's the name of your company?",
       "response": {
@@ -15,7 +15,7 @@
       "followup": [
         {
           "matched-response": "yes",
-          "followup-questions": [
+          "questions": [
             {
               "prompt": "Do you know how awesome you are?",
               "response": {
@@ -26,7 +26,7 @@
         },
         {
           "matched-response": "no",
-          "followup-questions": [
+          "questions": [
             {
               "prompt": "Did you know how much people love remote work?",
               "response": {
@@ -48,7 +48,8 @@
           "Backend",
           "Full-Stack Web"
         ]
-      }
+      },
+      "server-key": "worker-type"
     }
   ]
 }
