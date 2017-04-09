@@ -168,6 +168,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         configureMessage(questionMessage, false);
         messagingFragment.addNewMessage(questionMessage);
 
+        maybeStoreQuestionResponse(response);
         maybeInsertFollowupQuestions(response);
         handleQuestionAnswered();
 
