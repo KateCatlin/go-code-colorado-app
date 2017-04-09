@@ -10,8 +10,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.example.katecatlin.diversityapp.R;
 import com.example.katecatlin.diversityapp.messages.VerticalGeneralOptionsMessage;
-import com.example.katecatlin.diversityapp.models.Question;
 import com.example.katecatlin.diversityapp.models.Followup;
+import com.example.katecatlin.diversityapp.models.Question;
 import com.example.katecatlin.diversityapp.models.QuestionFlow;
 import com.google.gson.Gson;
 
@@ -21,7 +21,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.slyce.messaging.SlyceMessagingFragment;
 import it.slyce.messaging.listeners.OnOptionSelectedListener;
@@ -44,6 +46,8 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     private SlyceMessagingFragment messagingFragment;
 
     private List<Question> questions;
+
+    private Map<String, String> serverRelevantResponses = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,12 +120,20 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
     @Override
     public void onUserSendsTextMessage(final String text) {
-        handleFollowUp(text);
+        maybeStoreQuestionResponse(text);
+        maybeInsertFollowupQuestions(text);
         handleQuestionAnswered();
     }
 
-    private void handleQuestionAnswered() {
+    private void maybeStoreQuestionResponse(String text) {
+        final String serverKey = currentQuestion.getServerKey();
 
+        if (serverKey != null) {
+            serverRelevantResponses.put(serverKey, text);
+        }
+    }
+
+    private void handleQuestionAnswered() {
         if (areThereMoreQuestions()) {
             updateCurrentQuestion();
             askCurrentQuestion();
@@ -159,13 +171,13 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         configureMessage(questionMessage, false);
         messagingFragment.addNewMessage(questionMessage);
 
-        handleFollowUp(response);
+        maybeInsertFollowupQuestions(response);
         handleQuestionAnswered();
 
         return ""; // not used!
     }
 
-    private void handleFollowUp (String textAnswer) {
+    private void maybeInsertFollowupQuestions(String textAnswer) {
         boolean isFollowUp = currentQuestion.getFollowup() != null && !currentQuestion.getFollowup().isEmpty();
 
         if (isFollowUp) {

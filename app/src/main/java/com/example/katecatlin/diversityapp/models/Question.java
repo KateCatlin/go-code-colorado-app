@@ -17,6 +17,9 @@ public class Question {
     @SerializedName("followup")
     @Expose
     private List<Followup> followup = null;
+    @SerializedName("server-key")
+    @Expose
+    private String serverKey;
 
     public String getPrompt() {
         return prompt;
@@ -40,6 +43,14 @@ public class Question {
 
     public void setFollowup(List<Followup> followup) {
         this.followup = followup;
+    }
+
+    public String getServerKey() {
+        return serverKey;
+    }
+
+    public void setServerKey(final String serverKey) {
+        this.serverKey = serverKey;
     }
 
 }
