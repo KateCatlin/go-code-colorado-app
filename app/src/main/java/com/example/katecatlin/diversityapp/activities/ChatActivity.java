@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.katecatlin.diversityapp.R;
+import com.example.katecatlin.diversityapp.messages.VerticalGeneralOptionsMessage;
 import com.example.katecatlin.diversityapp.models.Datum;
 import com.example.katecatlin.diversityapp.models.QuestionFlow;
 import com.google.gson.Gson;
@@ -17,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 
 import it.slyce.messaging.SlyceMessagingFragment;
-import it.slyce.messaging.listeners.OnOptionSelectedListener;
 import it.slyce.messaging.listeners.UserSendsMessageListener;
 import it.slyce.messaging.message.GeneralOptionsMessage;
 import it.slyce.messaging.message.MessageSource;
@@ -71,13 +71,13 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
             currentMessage.setDate(new Date().getTime());
             messagingFragment.addNewMessage(currentMessage);
         } else if (questionType.equals("choice")) {
-            final GeneralOptionsMessage currentMessage = new GeneralOptionsMessage();
+            final GeneralOptionsMessage currentMessage = new VerticalGeneralOptionsMessage();
             currentMessage.setTitle(currentQuestion.getPrompt());
             currentMessage.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
             currentMessage.setSource(MessageSource.EXTERNAL_USER);
             currentMessage.setDate(new Date().getTime());
             List<String> listOfChoices = currentQuestion.getResponse().getChoices();
-            currentMessage.setOptions((String[]) listOfChoices.toArray(new String[listOfChoices.size()]));
+            currentMessage.setOptions(listOfChoices.toArray(new String[listOfChoices.size()]));
 
             messagingFragment.addNewMessage(currentMessage);
 
