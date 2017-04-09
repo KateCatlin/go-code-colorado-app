@@ -8,13 +8,6 @@
       }
     },
     {
-      "prompt": "Where is the job located?",
-      "response": {
-        "type": "user-entry"
-      },
-      "server-key": "location"
-    },
-    {
       "prompt": "Did you know companies that allow for remote work are more likely to have diverse teams?"
     },
     {
@@ -80,6 +73,13 @@
           "Specialist"
         ]
       }
+    },
+    {
+      "prompt": "Where is the job located?",
+      "response": {
+        "type": "user-entry"
+      },
+      "server-key": "location"
     }
   ]
 }
