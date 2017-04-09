@@ -1,9 +1,12 @@
 package com.example.katecatlin.diversityapp.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.katecatlin.diversityapp.R;
 import com.example.katecatlin.diversityapp.messages.VerticalGeneralOptionsMessage;
@@ -22,6 +25,7 @@ import it.slyce.messaging.SlyceMessagingFragment;
 import it.slyce.messaging.listeners.OnOptionSelectedListener;
 import it.slyce.messaging.listeners.UserSendsMessageListener;
 import it.slyce.messaging.message.GeneralOptionsMessage;
+import it.slyce.messaging.message.Message;
 import it.slyce.messaging.message.MessageSource;
 import it.slyce.messaging.message.TextMessage;
 
@@ -64,9 +68,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
             case "user-entry":
                 final TextMessage currentMessage = new TextMessage();
                 currentMessage.setText(currentQuestion.getPrompt());
-                currentMessage.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
-                currentMessage.setSource(MessageSource.EXTERNAL_USER);
-                currentMessage.setDate(new Date().getTime());
+                configureMessage(currentMessage, true);
                 messagingFragment.addNewMessage(currentMessage);
                 break;
             case "binary":
@@ -81,15 +83,12 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     private void presentChoiceMessage(String title, List<String> options) {
         final TextMessage questionMessage = new TextMessage();
         questionMessage.setText(title);
-        questionMessage.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
-        questionMessage.setSource(MessageSource.EXTERNAL_USER);
-        questionMessage.setDate(new Date().getTime());
+        questionMessage.setText(currentQuestion.getPrompt());
+        configureMessage(questionMessage, true);
         messagingFragment.addNewMessage(questionMessage);
 
         final GeneralOptionsMessage currentMessage = new VerticalGeneralOptionsMessage();
-        currentMessage.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
-        currentMessage.setSource(MessageSource.EXTERNAL_USER);
-        currentMessage.setDate(new Date().getTime());
+        configureMessage(currentMessage, true);
         currentMessage.setOnOptionSelectedListener(this);
         currentMessage.setOptions(options.toArray(new String[options.size()]));
 
@@ -99,6 +98,12 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     private void updateCurrentQuestion() {
         currentQuestion = questions.get(0);
         questions.remove(0);
+
+        String questionType = currentQuestion.getResponse().getType();
+
+        if (questionType.equals("binary") || questionType.equals("choice")) {
+            dismissKeyboard(findViewById(android.R.id.content));
+        }
     }
 
     private boolean areThereMoreQuestions() {
@@ -145,13 +150,25 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
         final TextMessage questionMessage = new TextMessage();
         questionMessage.setText(response);
-        questionMessage.setSource(MessageSource.LOCAL_USER);
-        questionMessage.setDate(new Date().getTime());
+        configureMessage(questionMessage, false);
         messagingFragment.addNewMessage(questionMessage);
-
         handleQuestionAnswered();
 
         return ""; // not used!
+    }
+
+    private void configureMessage(Message message, boolean fromBot) {
+        message.setSource(fromBot ? MessageSource.EXTERNAL_USER : MessageSource.LOCAL_USER);
+        message.setDate(new Date().getTime());
+
+        if (fromBot) {
+            message.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
+        }
+    }
+
+    private void dismissKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }
