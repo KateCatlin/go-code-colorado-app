@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import it.slyce.messaging.SlyceMessagingFragment;
+import it.slyce.messaging.listeners.OnOptionSelectedListener;
 import it.slyce.messaging.listeners.UserSendsMessageListener;
 import it.slyce.messaging.message.GeneralOptionsMessage;
 import it.slyce.messaging.message.MessageSource;
@@ -27,7 +28,7 @@ import it.slyce.messaging.message.TextMessage;
  * Created by katecatlin on 4/8/17.
  */
 
-public class ChatActivity extends AppCompatActivity implements UserSendsMessageListener {
+public class ChatActivity extends AppCompatActivity implements UserSendsMessageListener, OnOptionSelectedListener {
 
     private Datum currentQuestion;
 
@@ -71,16 +72,22 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
             currentMessage.setDate(new Date().getTime());
             messagingFragment.addNewMessage(currentMessage);
         } else if (questionType.equals("choice")) {
+            final TextMessage questionMessage = new TextMessage();
+            questionMessage.setText(currentQuestion.getPrompt());
+            questionMessage.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
+            questionMessage.setSource(MessageSource.EXTERNAL_USER);
+            questionMessage.setDate(new Date().getTime());
+            messagingFragment.addNewMessage(questionMessage);
+
             final GeneralOptionsMessage currentMessage = new VerticalGeneralOptionsMessage();
-            currentMessage.setTitle(currentQuestion.getPrompt());
             currentMessage.setAvatarUrl("https://cdn.dribbble.com/users/28681/screenshots/2810499/robotheadshot01-dribbble_1x.jpg");
             currentMessage.setSource(MessageSource.EXTERNAL_USER);
             currentMessage.setDate(new Date().getTime());
+            currentMessage.setOnOptionSelectedListener(this);
             List<String> listOfChoices = currentQuestion.getResponse().getChoices();
             currentMessage.setOptions(listOfChoices.toArray(new String[listOfChoices.size()]));
 
             messagingFragment.addNewMessage(currentMessage);
-
         }
 
     }
@@ -96,6 +103,10 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
     @Override
     public void onUserSendsTextMessage(final String text) {
+        handleQuestionAnswered();
+    }
+
+    private void handleQuestionAnswered() {
         if (areThereMoreQuestions()) {
             updateCurrentQuestion();
             askCurrentQuestion();
@@ -111,6 +122,21 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     private void advanceToStats() {
         Intent intent = new Intent(this, StatActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public String onOptionSelected(final int optionSelected) {
+        String response = currentQuestion.getResponse().getChoices().get(optionSelected);
+
+        final TextMessage questionMessage = new TextMessage();
+        questionMessage.setText(response);
+        questionMessage.setSource(MessageSource.LOCAL_USER);
+        questionMessage.setDate(new Date().getTime());
+        messagingFragment.addNewMessage(questionMessage);
+
+        handleQuestionAnswered();
+
+        return ""; // not used!
     }
 
 }
