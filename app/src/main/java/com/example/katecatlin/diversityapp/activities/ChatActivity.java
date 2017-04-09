@@ -115,10 +115,12 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     }
 
     private void updateCurrentQuestion() {
-
-
         currentQuestion = questions.get(0);
         questions.remove(0);
+
+        if (currentQuestion.getResponse() == null) {
+            return;
+        }
 
         String questionType = currentQuestion.getResponse().getType();
 

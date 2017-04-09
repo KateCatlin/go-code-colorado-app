@@ -2,54 +2,84 @@
   "version": 1.1,
   "questions": [
     {
-      "prompt": "What's the name of your company?",
+      "prompt": "What's the title of the job?",
       "response": {
         "type": "user-entry"
       }
     },
     {
-      "prompt": "Are you open to remote workers?",
+      "prompt": "Where is the job located?",
+      "response": {
+        "type": "user-entry"
+      },
+      "server-key": "location"
+    },
+    {
+      "prompt": "Did you know companies that allow for remote work are more likely to have diverse teams?"
+    },
+    {
+      "prompt": "Are you open to remote work?",
       "response": {
         "type": "binary"
       },
-      "followup": [
-        {
-          "matched-response": "yes",
-          "questions": [
-            {
-              "prompt": "Do you know how awesome you are?",
-              "response": {
-                "type": "binary"
-              }
-            }
-          ]
-        },
-        {
-          "matched-response": "no",
-          "questions": [
-            {
-              "prompt": "Did you know how much people love remote work?",
-              "response": {
-                "type": "binary"
-              }
-            }
-          ]
-        }
-      ]
+      "server-key": "remote"
     },
     {
-      "prompt": "What kind of tech worker do you need?",
+      "prompt": "How many years of experience for this role?",
+      "response": {
+        "type": "user-entry"
+      }
+    },
+    {
+      "prompt": "How many employees does your company have?",
+      "response": {
+        "type": "user-entry"
+      }
+    },
+    {
+      "prompt": "Did you know companies in the top quartile of gender diversity are 15% more likely to outperform their peers financially?"
+    },
+    {
+      "prompt": "How diverse is your company?",
       "response": {
         "type": "choice",
         "choices": [
-          "iOS",
-          "Android",
-          "Frontend Web",
-          "Backend",
-          "Full-Stack Web"
+          "Very",
+          "A little",
+          "Not at all"
         ]
+      }
+    },
+    {
+      "prompt": "What level of experience are you looking for?",
+      "response": {
+        "type": "choice",
+        "choices": [
+          "Junior",
+          "Senior",
+          "Leader"
+        ]
+      }
+    },
+    {
+      "prompt": "Did you know companies that hire junior developers are able to promote them to senior developers in less than 2 years?"
+    },
+    {
+      "prompt": "Are you open to providing on-the-job training?",
+      "response": {
+        "type": "binary"
       },
-      "server-key": "worker-type"
+      "server-key": "training"
+    },
+    {
+      "prompt": "Are you looking for a generalist or a specialist?",
+      "response": {
+        "type": "choice",
+        "choices": [
+          "Generalist",
+          "Specialist"
+        ]
+      }
     }
   ]
 }
