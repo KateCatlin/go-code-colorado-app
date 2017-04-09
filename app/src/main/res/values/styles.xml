@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="chat_styles">
+        <item name="backgroundColor">@color/background_white</item>
+        <item name="timestampTextColor">@color/teal</item>
+        <item name="localBubbleBackground">@color/teal</item>
+        <item name="localBubbleTextColor">@color/text_white</item>
+        <item name="externalBubbleBackground">@color/teal</item>
+        <item name="externalBubbleTextColor">@color/text_white</item>
+        <item name="snackbarBackground">@color/teal</item>
+        <item name="snackbarTitleColor">@color/text_white</item>
+        <item name="snackbarButtonColor">@color/text_white</item>
+    </style>
+
 </resources>

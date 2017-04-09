@@ -58,6 +58,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
         messagingFragment = (SlyceMessagingFragment) getFragmentManager().findFragmentById(R.id.messaging_fragment);
         messagingFragment.setOnSendMessageListener(this);
+        messagingFragment.setStyle(R.style.chat_styles);
 
         try {
             final InputStream inputStream = getAssets().open("question_flow.json");

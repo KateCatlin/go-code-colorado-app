@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WebView
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_stat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.katecatlin.diversityapp.activities.LaunchActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/diversityheader"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        />
+
+    <WebView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/webview"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    </WebView>
 
-</WebView>
+</LinearLayout>
