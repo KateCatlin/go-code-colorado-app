@@ -142,7 +142,6 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         }
     }
 
-
     @Override
     public void onUserSendsMediaMessage(final Uri imageUri) {}
 
@@ -190,7 +189,6 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
                 }
             }
         }
-
     }
 
     private void configureMessage(Message message, boolean fromBot) {
