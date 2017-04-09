@@ -21,9 +21,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import it.slyce.messaging.SlyceMessagingFragment;
 import it.slyce.messaging.listeners.OnOptionSelectedListener;
@@ -47,7 +45,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
     private List<Question> questions;
 
-    private Map<String, String> serverRelevantResponses = new HashMap<>();
+    private List<String> serverRelevantResponses = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +127,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         final String serverKey = currentQuestion.getServerKey();
 
         if (serverKey != null) {
-            serverRelevantResponses.put(serverKey, text);
+            serverRelevantResponses.add(text);
         }
     }
 
