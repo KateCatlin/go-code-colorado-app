@@ -72,6 +72,16 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     }
 
     private void askCurrentQuestion() {
+        if (currentQuestion.getResponse() == null) {
+            final TextMessage currentMessage = new TextMessage();
+            currentMessage.setText(currentQuestion.getPrompt());
+            configureMessage(currentMessage, true);
+            messagingFragment.addNewMessage(currentMessage);
+
+            handleQuestionAnswered();
+            return;
+        }
+
         String questionType = currentQuestion.getResponse().getType();
         switch (questionType) {
             case "user-entry":
@@ -105,10 +115,12 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     }
 
     private void updateCurrentQuestion() {
-
-
         currentQuestion = questions.get(0);
         questions.remove(0);
+
+        if (currentQuestion.getResponse() == null) {
+            return;
+        }
 
         String questionType = currentQuestion.getResponse().getType();
 
