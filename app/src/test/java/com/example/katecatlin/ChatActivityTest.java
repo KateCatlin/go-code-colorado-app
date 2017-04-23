@@ -17,8 +17,8 @@ public final class ChatActivityTest {
 
     @Before
     public void setUp() {
-
-
+        chatActivity = new ChatActivity();
     }
+
 
 }
