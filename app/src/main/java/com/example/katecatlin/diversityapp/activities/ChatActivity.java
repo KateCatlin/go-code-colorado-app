@@ -47,8 +47,6 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
     private SlyceMessagingFragment messagingFragment;
 
-    private List<Question> questions;
-
     private List<String> serverRelevantResponses = new ArrayList<>();
     private ChatLogic chatLogic;
 
@@ -66,10 +64,25 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
             chatLogic = new ChatLogic(getAssets().open("question_flow.json"));
         } catch (IOException e) {
         }
-        questions = chatLogic.getQuestions();
+
 
         updateCurrentQuestion();
         askCurrentQuestion();
+    }
+
+    private void updateCurrentQuestion() {
+        currentQuestion = chatLogic.newQuestion();
+
+        if (currentQuestion.getResponse() == null) {
+            return;
+        }
+
+        String questionType = currentQuestion.getResponse().getType();
+
+        if (questionType.equals("binary") || questionType.equals("choice")) {
+            dismissKeyboard(findViewById(android.R.id.content));
+        }
+
     }
 
     private void askCurrentQuestion() {
@@ -115,29 +128,10 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         messagingFragment.addNewMessage(currentMessage);
     }
 
-    private void updateCurrentQuestion() {
-        currentQuestion = questions.get(0);
-        questions.remove(0);
-
-        if (currentQuestion.getResponse() == null) {
-            return;
-        }
-
-        String questionType = currentQuestion.getResponse().getType();
-
-        if (questionType.equals("binary") || questionType.equals("choice")) {
-            dismissKeyboard(findViewById(android.R.id.content));
-        }
-    }
-
-    private boolean areThereMoreQuestions() {
-        return !questions.isEmpty();
-    }
-
     @Override
     public void onUserSendsTextMessage(final String text) {
         maybeStoreQuestionResponse(text);
-        maybeInsertFollowupQuestions(text);
+        chatLogic.maybeInsertFollowupQuestions(text);
         handleQuestionAnswered();
     }
 
@@ -150,7 +144,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     }
 
     private void handleQuestionAnswered() {
-        if (areThereMoreQuestions()) {
+        if (chatLogic.areThereMoreQuestions()) {
             updateCurrentQuestion();
             askCurrentQuestion();
         } else {
@@ -191,26 +185,12 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         messagingFragment.addNewMessage(questionMessage);
 
         maybeStoreQuestionResponse(response);
-        maybeInsertFollowupQuestions(response);
+        chatLogic.maybeInsertFollowupQuestions(response);
         handleQuestionAnswered();
 
         return ""; // not used!
     }
 
-    private void maybeInsertFollowupQuestions(String textAnswer) {
-        boolean isFollowUp = currentQuestion.getFollowup() != null && !currentQuestion.getFollowup().isEmpty();
-
-        if (isFollowUp) {
-            for (Followup followup: currentQuestion.getFollowup()) {
-                if (followup.getMatchedResponse().equalsIgnoreCase(textAnswer)) {
-                    List<Question> updatedQuestions = new ArrayList<>();
-                    updatedQuestions.addAll(followup.getFollowupQuestions());
-                    updatedQuestions.addAll(questions);
-                    questions = updatedQuestions;
-                }
-            }
-        }
-    }
 
     private void configureMessage(Message message, boolean fromBot) {
         message.setSource(fromBot ? MessageSource.EXTERNAL_USER : MessageSource.LOCAL_USER);
