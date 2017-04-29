@@ -17,6 +17,7 @@ import com.example.katecatlin.diversityapp.models.QuestionFlow;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     private List<Question> questions;
 
     private List<String> serverRelevantResponses = new ArrayList<>();
+    private ChatLogic chatLogic;
 
 
     @Override
@@ -61,11 +63,10 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         messagingFragment.setStyle(R.style.chat_styles);
 
         try {
-            final InputStream inputStream = getAssets().open("question_flow.json");
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            questions = new Gson().fromJson(reader, QuestionFlow.class).getData();
-        } catch (Exception e) {
+            chatLogic = new ChatLogic(getAssets().open("question_flow.json"));
+        } catch (IOException e) {
         }
+        questions = chatLogic.getQuestions();
 
         updateCurrentQuestion();
         askCurrentQuestion();
