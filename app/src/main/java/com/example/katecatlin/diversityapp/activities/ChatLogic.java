@@ -24,6 +24,10 @@ public class ChatLogic {
         questions = readQuestionsFromJson(inputStream);
     }
 
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
     private List<Question> readQuestionsFromJson(InputStream inputStream) {
         try {
             final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
@@ -31,10 +35,6 @@ public class ChatLogic {
         } catch (Exception e) {
             return Collections.emptyList();
         }
-    }
-
-    public List<Question> getQuestions() {
-        return questions;
     }
 
     public Question newQuestion() {

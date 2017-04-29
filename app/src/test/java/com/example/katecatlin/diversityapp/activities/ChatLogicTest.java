@@ -28,5 +28,9 @@ public class ChatLogicTest {
         List<Question> questions = chatLogic.getQuestions();
         assertNotNull(questions);
         assertEquals(12, questions.size());
+        assertEquals("questions not retrieved properly", questions.get(0).getPrompt(), "What's the title of the job?" );
     }
+
+//    @Test
+
 }
