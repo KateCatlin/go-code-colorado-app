@@ -43,11 +43,11 @@ public class ChatLogicTest {
     @Test
     public void testNewQuestion() throws Exception {
         Question expectedQuestion = questions.get(1);
-        chatLogic.newQuestion();
-        
         Question actualQuestion = chatLogic.newQuestion();
-        assertEquals(expectedQuestion, actualQuestion);
+        assertNotEquals(expectedQuestion, actualQuestion);
 
+        actualQuestion = chatLogic.newQuestion();
+        assertEquals(expectedQuestion, actualQuestion);
     }
 
 }
