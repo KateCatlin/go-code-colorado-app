@@ -30,7 +30,7 @@ public class ChatLogic {
     private List<Question> questions;
     private Question currentQuestion;
     private List<String> serverRelevantResponses = new ArrayList<>();
-
+    public List<String> questionResponseChoices;
 
     public ChatLogic(InputStream inputStream, ChatLogicInterface chatLogicInterface) {
         questions = readQuestionsFromJson(inputStream);
@@ -72,42 +72,33 @@ public class ChatLogic {
 
 
     public void updateCurrentQuestion() {
+        final TextMessage currentMessage = new TextMessage();
         currentQuestion = questions.get(0);
         questions.remove(0);
 
         if (currentQuestion.getResponse() == null) {
-            return;
-        }
-
-        String questionType = currentQuestion.getResponse().getType();
-
-    }
-
-    public void askCurrentQuestion() {
-        if (currentQuestion.getResponse() == null) {
-            final TextMessage currentMessage = new TextMessage();
             currentMessage.setText(currentQuestion.getPrompt());
             configureMessage(currentMessage, true);
-            messagingFragment.addNewMessage(currentMessage);
-
-            handleQuestionAnswered();
-            return;
+            chatLogicInterface.callback(currentMessage, questionResponseChoices);
         }
+        else {
+            currentMessage.setText(currentQuestion.getPrompt());
+            String questionType = currentQuestion.getResponse().getType();
+            switch (questionType) {
+                case "user-entry":
 
-        String questionType = currentQuestion.getResponse().getType();
-        switch (questionType) {
-            case "user-entry":
-                final TextMessage currentMessage = new TextMessage();
-                currentMessage.setText(currentQuestion.getPrompt());
-                configureMessage(currentMessage, true);
-                messagingFragment.addNewMessage(currentMessage);
-                break;
-            case "binary":
-                presentChoiceMessage(currentQuestion.getPrompt(), Arrays.asList("Yes", "No"));
-                break;
-            case "choice":
-                presentChoiceMessage(currentQuestion.getPrompt(), currentQuestion.getResponse().getChoices());
-                break;
+                    configureMessage(currentMessage, true);
+                    chatLogicInterface.callback(currentMessage, questionResponseChoices);
+                    break;
+                case "binary":
+                    questionResponseChoices = Arrays.asList("Yes", "No");
+                    chatLogicInterface.callback(currentMessage, questionResponseChoices);
+                    break;
+                case "choice":
+                    questionResponseChoices = currentQuestion.getResponse().getChoices();
+                    chatLogicInterface.callback(currentMessage, questionResponseChoices);
+                    break;
+            }
         }
     }
 
@@ -123,7 +114,6 @@ public class ChatLogic {
 
     public void maybeStoreQuestionResponse(String text) {
         final String serverKey = currentQuestion.getServerKey();
-        final String experiment = currentQuestion.getResponse().getChoices().get(optionSelected);
 
         if (serverKey != null) {
             serverRelevantResponses.add(text);

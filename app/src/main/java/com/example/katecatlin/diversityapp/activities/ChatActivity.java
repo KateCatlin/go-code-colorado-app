@@ -64,10 +64,9 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         chatLogic.updateCurrentQuestion();
     }
 
-
     private void askCurrentQuestion(TextMessage textMessage, List<String> options) {
 
-        if (options.isEmpty()) {
+        if (options == null) {
             messagingFragment.addNewMessage((textMessage));
         } else {
             dismissKeyboard(findViewById(android.R.id.content));
@@ -79,11 +78,6 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
             messagingFragment.addNewMessage(currentMessage);
         }
-
-        messagingFragment.addNewMessage(textMessage);
-
-
-        handleQuestionAnswered();
     }
 
     private void handleQuestionAnswered() {
