@@ -1,5 +1,6 @@
 package com.example.katecatlin.diversityapp.activities;
 
+import com.example.katecatlin.diversityapp.interfaces.ChatLogicInterface;
 import com.example.katecatlin.diversityapp.models.Followup;
 import com.example.katecatlin.diversityapp.models.Question;
 import com.example.katecatlin.diversityapp.models.QuestionFlow;
@@ -17,11 +18,13 @@ import java.util.List;
  */
 
 public class ChatLogic {
+    ChatLogicInterface cLI;
     private List<Question> questions;
     private Question tempQuestion;
 
-    public ChatLogic(InputStream inputStream) {
+    public ChatLogic(InputStream inputStream, ChatLogicInterface cLI) {
         questions = readQuestionsFromJson(inputStream);
+        this.cLI = cLI;
     }
 
     public List<Question> getQuestions() {
@@ -40,6 +43,7 @@ public class ChatLogic {
     public Question newQuestion() {
         tempQuestion = questions.get(0);
         questions.remove(0);
+        cLI.callback();
         return tempQuestion;
     }
 

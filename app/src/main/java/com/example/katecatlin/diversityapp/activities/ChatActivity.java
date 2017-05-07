@@ -6,20 +6,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.katecatlin.diversityapp.R;
+import com.example.katecatlin.diversityapp.interfaces.ChatLogicInterface;
 import com.example.katecatlin.diversityapp.messages.VerticalGeneralOptionsMessage;
-import com.example.katecatlin.diversityapp.models.Followup;
 import com.example.katecatlin.diversityapp.models.Question;
-import com.example.katecatlin.diversityapp.models.QuestionFlow;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -37,7 +33,7 @@ import it.slyce.messaging.message.TextMessage;
  * Created by katecatlin on 4/8/17.
  */
 
-public class ChatActivity extends AppCompatActivity implements UserSendsMessageListener, OnOptionSelectedListener {
+public class ChatActivity extends AppCompatActivity implements UserSendsMessageListener, OnOptionSelectedListener, ChatLogicInterface {
 
     public static final List<String> BINARY_QUESTION_CHOICES = Arrays.asList("yes", "no");
     public static final String FULL_URL_KEY = "FULL_URL_KEY";
@@ -49,6 +45,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
     private List<String> serverRelevantResponses = new ArrayList<>();
     private ChatLogic chatLogic;
+    public static String TAG = "TAG";
 
 
     @Override
@@ -61,7 +58,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         messagingFragment.setStyle(R.style.chat_styles);
 
         try {
-            chatLogic = new ChatLogic(getAssets().open("question_flow.json"));
+            chatLogic = new ChatLogic(getAssets().open("question_flow.json"), this);
         } catch (IOException e) {
         }
 
@@ -210,4 +207,8 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         return TextUtils.join("/", serverRelevantResponses).replaceAll("\\s+", "").toLowerCase();
     }
 
+    @Override
+    public void callback() {
+        Log.d(TAG, "callback: ");
+    }
 }
