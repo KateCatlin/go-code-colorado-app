@@ -1,33 +1,24 @@
 package com.example.katecatlin.diversityapp.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.katecatlin.diversityapp.R;
 import com.example.katecatlin.diversityapp.interfaces.ChatLogicInterface;
 import com.example.katecatlin.diversityapp.messages.VerticalGeneralOptionsMessage;
-import com.example.katecatlin.diversityapp.models.Question;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import it.slyce.messaging.SlyceMessagingFragment;
 import it.slyce.messaging.listeners.OnOptionSelectedListener;
 import it.slyce.messaging.listeners.UserSendsMessageListener;
 import it.slyce.messaging.message.GeneralOptionsMessage;
-import it.slyce.messaging.message.Message;
-import it.slyce.messaging.message.MessageSource;
 import it.slyce.messaging.message.TextMessage;
 
 /**
@@ -37,11 +28,8 @@ import it.slyce.messaging.message.TextMessage;
 public class ChatActivity extends AppCompatActivity implements UserSendsMessageListener, OnOptionSelectedListener, ChatLogicInterface {
 
     public static final String FULL_URL_KEY = "FULL_URL_KEY";
-
     private SlyceMessagingFragment messagingFragment;
-
     private ChatLogic chatLogic;
-    public static String TAG = "TAG";
     public List<String> questionResponseChoices;
 
 
@@ -78,32 +66,13 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         }
     }
 
-    private void handleQuestionAnswered() {
-        if (chatLogic.areThereMoreQuestions()) {
-            chatLogic.updateCurrentQuestion();
-        } else {
-            advanceToStats();
-        }
-    }
-
 
     @Override
     public void onUserSendsMediaMessage(final Uri imageUri) {}
 
-    private void advanceToStats() {
-        String baseURL = "https://salty-refuge-57490.herokuapp.com/";
-        String fullURL = baseURL + chatLogic.getServerPath();
-
-        Intent intent = new Intent(this, StatActivity.class);
-        intent.putExtra(FULL_URL_KEY, fullURL);
-        startActivity(intent);
-    }
-
     @Override
     public void onUserSendsTextMessage(final String text) {
-        chatLogic.maybeStoreQuestionResponse(text);
-        chatLogic.maybeInsertFollowupQuestions(text);
-        handleQuestionAnswered();
+        chatLogic.handleQuestionAnswered(text);
     }
 
     @Override
@@ -117,9 +86,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         chatLogic.configureMessage(questionMessage, false);
         messagingFragment.addNewMessage(questionMessage);
 
-        chatLogic.maybeStoreQuestionResponse(response);
-        chatLogic.maybeInsertFollowupQuestions(response);
-        handleQuestionAnswered();
+        chatLogic.handleQuestionAnswered(response);
 
         return ""; // not used!
     }
@@ -130,12 +97,17 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-
-
     @Override
     public void callback(TextMessage currentMessage, List<String> options) {
         questionResponseChoices = options;
         askCurrentQuestion(currentMessage, questionResponseChoices);
 
+    }
+
+    @Override
+    public void advanceToStats(String URLToCall) {
+        Intent intent = new Intent(this, StatActivity.class);
+        intent.putExtra(FULL_URL_KEY, URLToCall);
+        startActivity(intent);
     }
 }

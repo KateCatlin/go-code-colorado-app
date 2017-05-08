@@ -127,6 +127,23 @@ public class ChatLogic {
         }
     }
 
+    public void handleQuestionAnswered(final String text) {
+        maybeStoreQuestionResponse(text);
+        maybeInsertFollowupQuestions(text);
+        if (areThereMoreQuestions()) {
+            updateCurrentQuestion();
+        } else {
+            assembleURLFromAnswers();
+        }
+    }
+
+    public void assembleURLFromAnswers() {
+        String baseURL = "https://salty-refuge-57490.herokuapp.com/";
+        String fullURL = baseURL + getServerPath();
+        chatLogicInterface.advanceToStats(fullURL);
+    }
+
+
     public String getServerPath() {
         return TextUtils.join("/", serverRelevantResponses).replaceAll("\\s+", "").toLowerCase();
     }

@@ -12,4 +12,5 @@ import it.slyce.messaging.message.TextMessage;
 
 public interface ChatLogicInterface {
     public void callback(TextMessage textMessage, List<String> options);
+    public void advanceToStats(String URLToCall);
 }
