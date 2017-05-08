@@ -62,14 +62,14 @@ public class ChatLogic {
         final TextMessage currentMessage = new TextMessage();
         currentQuestion = questions.get(0);
         questions.remove(0);
-
         configureMessage(currentMessage, true);
+
+        currentMessage.setText(currentQuestion.getPrompt());
+
         if (currentQuestion.getResponse() == null) {
-            currentMessage.setText(currentQuestion.getPrompt());
             chatLogicInterface.callback(currentMessage, null);
         }
         else {
-            currentMessage.setText(currentQuestion.getPrompt());
             String questionType = currentQuestion.getResponse().getType();
             switch (questionType) {
                 case "user-entry":

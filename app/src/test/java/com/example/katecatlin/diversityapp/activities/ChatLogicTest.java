@@ -21,13 +21,13 @@ public class ChatLogicTest {
     @BeforeClass
     public static void getInputStream() {
         inputStream = ChatLogicTest.class.getResourceAsStream("/questions.json");
-        chatLogic = new ChatLogic(inputStream);
+        chatLogic = new ChatLogic(inputStream, null);
         questions = chatLogic.getQuestions();
     }
 
     @Test
     public void parseNull() throws Exception {
-        ChatLogic chatLogicNullTest = new ChatLogic(null);
+        ChatLogic chatLogicNullTest = new ChatLogic(null, null);
         List<Question> questions = chatLogicNullTest.getQuestions();
         assertNotNull(questions);
         assertEquals(0, questions.size());
@@ -41,13 +41,14 @@ public class ChatLogicTest {
     }
 
     @Test
-    public void testNewQuestion() throws Exception {
-        Question expectedQuestion = questions.get(1);
-        Question actualQuestion = chatLogic.newQuestion();
-        assertNotEquals(expectedQuestion, actualQuestion);
-
-        actualQuestion = chatLogic.newQuestion();
-        assertEquals(expectedQuestion, actualQuestion);
+    public void updateCurrentQuestion() throws Exception {
+        Question originalQuestion = questions.get(0);
+        Question expectedUpdatedQuestion = questions.get(1);
+        updateCurrentQuestion();
+        Question actualUpdatedQuestion = questions.get(0);
+        assertNotEquals(originalQuestion, actualUpdatedQuestion);
+        assertEquals(expectedUpdatedQuestion, actualUpdatedQuestion);
     }
+    
 
 }
