@@ -53,8 +53,10 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
     private void askCurrentQuestion(TextMessage textMessage, List<String> options) {
 
         if (options == null) {
+            //If there's no options, it means it's a user-entry question
             messagingFragment.addNewMessage(textMessage);
         } else {
+            //This means it's a multiple-choice or binary question
             dismissKeyboard(findViewById(android.R.id.content));
             messagingFragment.addNewMessage(textMessage);
 
@@ -106,6 +108,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
 
     @Override
     public void advanceToStats(String URLToCall) {
+        //This is called through the interface when there are no more questions to ask.
         Intent intent = new Intent(this, StatActivity.class);
         intent.putExtra(FULL_URL_KEY, URLToCall);
         startActivity(intent);

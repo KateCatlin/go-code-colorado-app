@@ -1,7 +1,6 @@
 package com.example.katecatlin.diversityapp.activities;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.example.katecatlin.diversityapp.interfaces.ChatLogicInterface;
 import com.example.katecatlin.diversityapp.models.Followup;
@@ -19,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 
 import it.slyce.messaging.message.Message;
-import it.slyce.messaging.message.MessageSource;
 import it.slyce.messaging.message.TextMessage;
 
 import static it.slyce.messaging.message.MessageSource.EXTERNAL_USER;
@@ -35,7 +33,6 @@ public class ChatLogic {
     private Question currentQuestion;
     private List<String> serverRelevantResponses = new ArrayList<>();
     public List<String> questionResponseChoices;
-    public static String TAG = "TAG";
 
 
     public ChatLogic(InputStream inputStream, ChatLogicInterface chatLogicInterface) {
@@ -53,22 +50,6 @@ public class ChatLogic {
             return new Gson().fromJson(reader, QuestionFlow.class).getData();
         } catch (Exception e) {
             return Collections.emptyList();
-        }
-    }
-
-
-    public void maybeInsertFollowupQuestions(String textAnswer) {
-        boolean isFollowUp = currentQuestion.getFollowup() != null && !currentQuestion.getFollowup().isEmpty();
-
-        if (isFollowUp) {
-            for (Followup followup: currentQuestion.getFollowup()) {
-                if (followup.getMatchedResponse().equalsIgnoreCase(textAnswer)) {
-                    List<Question> updatedQuestions = new ArrayList<>();
-                    updatedQuestions.addAll(followup.getFollowupQuestions());
-                    updatedQuestions.addAll(questions);
-                    questions = updatedQuestions;
-                }
-            }
         }
     }
 
@@ -119,6 +100,16 @@ public class ChatLogic {
         }
     }
 
+    public void handleQuestionAnswered(final String text) {
+        maybeStoreQuestionResponse(text);
+        maybeInsertFollowupQuestions(text);
+        if (areThereMoreQuestions()) {
+            updateCurrentQuestion();
+        } else {
+            assembleURLFromAnswers();
+        }
+    }
+
     public void maybeStoreQuestionResponse(String text) {
         final String serverKey = currentQuestion.getServerKey();
 
@@ -127,13 +118,18 @@ public class ChatLogic {
         }
     }
 
-    public void handleQuestionAnswered(final String text) {
-        maybeStoreQuestionResponse(text);
-        maybeInsertFollowupQuestions(text);
-        if (areThereMoreQuestions()) {
-            updateCurrentQuestion();
-        } else {
-            assembleURLFromAnswers();
+    public void maybeInsertFollowupQuestions(String textAnswer) {
+        boolean isFollowUp = currentQuestion.getFollowup() != null && !currentQuestion.getFollowup().isEmpty();
+
+        if (isFollowUp) {
+            for (Followup followup: currentQuestion.getFollowup()) {
+                if (followup.getMatchedResponse().equalsIgnoreCase(textAnswer)) {
+                    List<Question> updatedQuestions = new ArrayList<>();
+                    updatedQuestions.addAll(followup.getFollowupQuestions());
+                    updatedQuestions.addAll(questions);
+                    questions = updatedQuestions;
+                }
+            }
         }
     }
 
