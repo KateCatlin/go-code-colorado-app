@@ -36,7 +36,6 @@ import it.slyce.messaging.message.TextMessage;
 
 public class ChatActivity extends AppCompatActivity implements UserSendsMessageListener, OnOptionSelectedListener, ChatLogicInterface {
 
-//    public static final List<String> BINARY_QUESTION_CHOICES = Arrays.asList("yes", "no");
     public static final String FULL_URL_KEY = "FULL_URL_KEY";
 
     private SlyceMessagingFragment messagingFragment;
@@ -60,14 +59,13 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         } catch (IOException e) {
         }
 
-
         chatLogic.updateCurrentQuestion();
     }
 
     private void askCurrentQuestion(TextMessage textMessage, List<String> options) {
 
         if (options == null) {
-            messagingFragment.addNewMessage((textMessage));
+            messagingFragment.addNewMessage(textMessage);
         } else {
             dismissKeyboard(findViewById(android.R.id.content));
             messagingFragment.addNewMessage(textMessage);
@@ -88,46 +86,6 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         }
     }
 
-//    switch (questionType) {
-//            case "user-entry":
-//                messagingFragment.addNewMessage(textMessage);
-//                break;
-//            case "binary":
-//                presentChoiceMessage(currentQuestion.getPrompt(), Arrays.asList("Yes", "No"));
-//                break;
-//            case "choice":
-//                presentChoiceMessage(currentQuestion.getPrompt(), currentQuestion.getResponse().getChoices());
-//                break;
-//        }
-//    private void presentChoiceMessage(String title, List<String> options) {
-//        final TextMessage questionMessage = new TextMessage();
-//        questionMessage.setText(title);
-//        questionMessage.setText(currentQuestion.getPrompt());
-//        configureMessage(questionMessage, true);
-//        messagingFragment.addNewMessage(questionMessage);
-//
-//        final GeneralOptionsMessage currentMessage = new VerticalGeneralOptionsMessage();
-//        configureMessage(currentMessage, true);
-//        currentMessage.setOnOptionSelectedListener(this);
-//        currentMessage.setOptions(options.toArray(new String[options.size()]));
-//
-//        messagingFragment.addNewMessage(currentMessage);
-//    }
-
-    //    @Override
-//    public void maybeDismissKeyboard () {
-//        if (questionType.equals("binary") || questionType.equals("choice")) {
-//            ChatActivity.dismissKeyboard(findViewById(android.R.id.content));
-//        }
-//    }
-
-    @Override
-    public void onUserSendsTextMessage(final String text) {
-        chatLogic.maybeStoreQuestionResponse(text);
-        chatLogic.maybeInsertFollowupQuestions(text);
-        handleQuestionAnswered();
-    }
-
 
     @Override
     public void onUserSendsMediaMessage(final Uri imageUri) {}
@@ -139,6 +97,13 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         Intent intent = new Intent(this, StatActivity.class);
         intent.putExtra(FULL_URL_KEY, fullURL);
         startActivity(intent);
+    }
+
+    @Override
+    public void onUserSendsTextMessage(final String text) {
+        chatLogic.maybeStoreQuestionResponse(text);
+        chatLogic.maybeInsertFollowupQuestions(text);
+        handleQuestionAnswered();
     }
 
     @Override

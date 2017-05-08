@@ -1,6 +1,7 @@
 package com.example.katecatlin.diversityapp.activities;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.katecatlin.diversityapp.interfaces.ChatLogicInterface;
 import com.example.katecatlin.diversityapp.models.Followup;
@@ -21,6 +22,9 @@ import it.slyce.messaging.message.Message;
 import it.slyce.messaging.message.MessageSource;
 import it.slyce.messaging.message.TextMessage;
 
+import static it.slyce.messaging.message.MessageSource.EXTERNAL_USER;
+import static it.slyce.messaging.message.MessageSource.LOCAL_USER;
+
 /**
  * Created by katecatlin on 4/25/17.
  */
@@ -31,6 +35,8 @@ public class ChatLogic {
     private Question currentQuestion;
     private List<String> serverRelevantResponses = new ArrayList<>();
     public List<String> questionResponseChoices;
+    public static String TAG = "TAG";
+
 
     public ChatLogic(InputStream inputStream, ChatLogicInterface chatLogicInterface) {
         questions = readQuestionsFromJson(inputStream);
@@ -76,18 +82,17 @@ public class ChatLogic {
         currentQuestion = questions.get(0);
         questions.remove(0);
 
+        configureMessage(currentMessage, true);
         if (currentQuestion.getResponse() == null) {
             currentMessage.setText(currentQuestion.getPrompt());
-            configureMessage(currentMessage, true);
-            chatLogicInterface.callback(currentMessage, questionResponseChoices);
+            chatLogicInterface.callback(currentMessage, null);
         }
         else {
             currentMessage.setText(currentQuestion.getPrompt());
             String questionType = currentQuestion.getResponse().getType();
             switch (questionType) {
                 case "user-entry":
-
-                    configureMessage(currentMessage, true);
+                    questionResponseChoices = null;
                     chatLogicInterface.callback(currentMessage, questionResponseChoices);
                     break;
                 case "binary":
@@ -104,11 +109,13 @@ public class ChatLogic {
 
 
     public void configureMessage(Message message, boolean fromBot) {
-        message.setSource(fromBot ? MessageSource.EXTERNAL_USER : MessageSource.LOCAL_USER);
         message.setDate(new Date().getTime());
 
         if (fromBot) {
+            message.setSource(EXTERNAL_USER);
             message.setAvatarUrl("file:///android_asset/ic_avatar.png");
+        } else {
+            message.setSource(LOCAL_USER);
         }
     }
 
