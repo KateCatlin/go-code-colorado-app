@@ -1,13 +1,23 @@
 package com.example.katecatlin.diversityapp.activities;
 
+import android.content.Context;
+
+import com.example.katecatlin.diversityapp.interfaces.ChatLogicInterface;
 import com.example.katecatlin.diversityapp.models.Question;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import it.slyce.messaging.message.Message;
+import it.slyce.messaging.message.MessageSource;
+import it.slyce.messaging.message.messageItem.MessageItem;
+
+import static it.slyce.messaging.message.MessageSource.EXTERNAL_USER;
 import static org.junit.Assert.*;
 
 /**
@@ -17,11 +27,12 @@ public class ChatLogicTest {
     static InputStream inputStream;
     static List<Question> questions;
     static ChatLogic chatLogic;
+    static ChatLogicInterface chatLogicInterface;
 
     @BeforeClass
     public static void getInputStream() {
         inputStream = ChatLogicTest.class.getResourceAsStream("/questions.json");
-        chatLogic = new ChatLogic(inputStream, null);
+        chatLogic = new ChatLogic(inputStream, chatLogicInterface);
         questions = chatLogic.getQuestions();
     }
 
@@ -44,11 +55,26 @@ public class ChatLogicTest {
     public void updateCurrentQuestion() throws Exception {
         Question originalQuestion = questions.get(0);
         Question expectedUpdatedQuestion = questions.get(1);
-        updateCurrentQuestion();
+        chatLogic.updateCurrentQuestion();
         Question actualUpdatedQuestion = questions.get(0);
         assertNotEquals(originalQuestion, actualUpdatedQuestion);
         assertEquals(expectedUpdatedQuestion, actualUpdatedQuestion);
     }
-    
+
+    @Test
+    public void configureMessage() throws Exception {
+        Boolean fromBot;
+        Message message = new Message() {
+            @Override
+            public MessageItem toMessageItem(Context context) {
+                return null;
+            }
+        };
+        chatLogic.configureMessage(message, true);
+        assertEquals(message.getSource(), EXTERNAL_USER);
+        assertNotNull(message.getAvatarUrl());
+        assertNotNull(message.getDate());
+    }
+
 
 }

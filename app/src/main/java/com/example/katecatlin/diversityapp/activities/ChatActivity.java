@@ -47,7 +47,7 @@ public class ChatActivity extends AppCompatActivity implements UserSendsMessageL
         } catch (IOException e) {
         }
 
-        chatLogic.updateCurrentQuestion();
+        chatLogic.prepareNewTextMessage();
     }
 
     private void askCurrentQuestion(TextMessage textMessage, List<String> options) {

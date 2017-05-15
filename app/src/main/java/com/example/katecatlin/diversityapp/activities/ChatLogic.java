@@ -57,13 +57,11 @@ public class ChatLogic {
         return !questions.isEmpty();
     }
 
-
-    public void updateCurrentQuestion() {
+    public void prepareNewTextMessage() {
         final TextMessage currentMessage = new TextMessage();
-        currentQuestion = questions.get(0);
-        questions.remove(0);
         configureMessage(currentMessage, true);
 
+        updateCurrentQuestion();
         currentMessage.setText(currentQuestion.getPrompt());
 
         if (currentQuestion.getResponse() == null) {
@@ -88,6 +86,10 @@ public class ChatLogic {
         }
     }
 
+    public void updateCurrentQuestion() {
+        currentQuestion = questions.get(0);
+        questions.remove(0);
+    }
 
     public void configureMessage(Message message, boolean fromBot) {
         message.setDate(new Date().getTime());
