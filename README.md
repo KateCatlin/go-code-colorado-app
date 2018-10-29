@@ -19,16 +19,20 @@ This generates a signed APK in the `app/build/outputs/apk` directory.
 
 # Features
 
-– Chatbot which asks questions regarding your employment needs. 
-– Pulls in local college data to suggest where you should recruit for your next hire.
+Chatbot which asks questions regarding your employment needs. 
+
+Pulls in local college data to suggest where you should recruit for your next hire.
 
 # ChangeLog & Roadmap
 
 As other folks have carried the product forward, there are no changes planned for this code repo. 
 
 As a product manager, there are several ways I would have built this differently from the start: 
+
 1.) Built the product as a simple web app rather than in native Android/iOS (those were the skill-sets we had on the team). 
+
 2.) Chat-bot functionality provided quick and easy setup through a 3rd-party library and was great for a quick MVP! Long-term, I would beta test with the chatbot UX vs. something closer to Typeform's smooth transitioning Q&A style. It may be that users enjoy the quirky chatbot style and it helps it feel more engaging (especially if we add some kind of personality to the bot) but I suspect employers would be more trusting of a more professional format. 
+
 3.) The next feature to prioritize would have been some kind of 1-click outreach to the schools suggested by the app. It could automtically message the career services department with contact info of the inquirerer for follow-up. This kind of easy action would have induced more outcomes. 
 
 
